@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="en">
+<head><meta charset="utf-8" /><title>Claims Chat</title>
+<script src="https://res.cdn.office.net/teams-js/2.15.0/js/MicrosoftTeams.min.js"></script>
+<style>html,body{height:100%;margin:0}</style>
+</head>
+<body>
+<!-- Flowise widget will be injected here -->
+<script>
+microsoftTeams.app.initialize().then(() => {
+  microsoftTeams.getContext(async ctx => {
+    const userName = ctx.user?.displayName || '';
+    // department is not in ctx; grab it via Graph if you like, else leave blank
+    const dept     = ctx.user?.userPrincipalName?.split('@')[0] || '';
+    // inject Flowise Chat widget script
+    const s = document.createElement('script');
+    s.src = 'https://cloud.flowiseai.com/js/embed.js';          // official embed bundle
+    s.setAttribute('data-flowid', 'b3c1c4b8-a30a-4a6e-955e-a0682cf24d94');           // ← copy from Flow info panel
+    s.setAttribute('data-theme',  'light');
+    s.setAttribute('data-overrideConfig', JSON.stringify({
+      vars:{ name: userName, department: dept }
+    }));
+    document.body.appendChild(s);
+  });
+});
+</script>
+</body></html>
