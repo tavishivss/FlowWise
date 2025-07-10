@@ -1,29 +1,20 @@
-<!DOCTYPE html><html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Claims Chat</title>
-  <script src="https://res.cdn.office.net/teams-js/2.15.0/js/MicrosoftTeams.min.js"></script>
-  <style>html,body{height:100%;margin:0}</style>
-</head>
-<body>
-<script>
-microsoftTeams.app.initialize().then(() => {
-  microsoftTeams.getContext(ctx => {
-    const userName = ctx.user?.displayName || ''
-    const dept     = ctx.user?.userPrincipalName?.split('@')[0] || ''
-    const s = document.createElement('script')
-    s.src  = 'https://cloud.flowiseai.com/js/embed.js'
-    s.setAttribute('data-flowid', 'b3c1c4b8-a30a-4a6e-955e-a0682cf24d94')      // 👈 parent flow
-    s.setAttribute('data-theme', 'light')
-    s.setAttribute(
-      'data-overrideConfig',
-      JSON.stringify({ vars:{ name: userName, department: dept } })
-    )
-    document.body.appendChild(s)
-  })
-})
+<script type="module">
+  import Chatbot from 'https://cdn.jsdelivr.net/npm/flowise-embed@latest/dist/web.js';
+
+  // Get Teams user context first
+  import { app as teamsApp } from 'https://res.cdn.office.net/teams-js/2.15.0/js/MicrosoftTeams.min.js';
+
+  await teamsApp.initialize();
+  const ctx = await teamsApp.getContext();
+
+  Chatbot.init({
+    chatflowid: 'b3c1c4b8-a30a-4a6e-955e-a0682cf24d94',
+    apiHost: 'https://cloud.flowiseai.com',
+    chatflowConfig: {
+      vars: {
+        name:        ctx.user?.displayName ?? '',
+        department:  (ctx.user?.userPrincipalName ?? '').split('@')[0]
+      }
+    }
+  });
 </script>
-</body></html>
-
-
-
